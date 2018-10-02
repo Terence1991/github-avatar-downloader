@@ -2,6 +2,8 @@ var request = require('request');
 var request2 = require('./secret.js')
 var fs = require('fs');
 var myToken = request2.Terence1991;
+var process1 = process.argv.slice(2);
+
 
 console.log('Welcome to the GitHub Avatar Downloader!');
 
@@ -20,15 +22,17 @@ function getRepoContributors(repoOwner, repoName, cb) {
     });
   }
 
-  getRepoContributors("jquery", "jquery", function(err, result) {
+  getRepoContributors(process1[0], process1[1], function(err, result) {
     var output = JSON.parse(result);
-    var avatarURLS =  output.map(a => a.avatar_url)
-    var userName = output.map(a => a.login);
-
-    for(var contributor of output) {
-        downloadImageByURL(contributor.avatar_url, `./avatars/${contributor.login}.jgp`)
+    // var avatarURLS =  output.map(a => a.avatar_url)
+    // var userName = output.map(a => a.login);
+    if(output.message === 'Not Found') {
+        console.log('incorect input')
+    } else { 
+     for(var contributor of output) {
+         downloadImageByURL(contributor.avatar_url, `./avatars/${contributor.login}.jgp`)
     }
-    
+     } 
   });
 
   
